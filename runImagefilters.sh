@@ -1,0 +1,1 @@
+./image-filters.do -g original.bmp FOO.bmp
