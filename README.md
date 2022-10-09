@@ -17,7 +17,7 @@ Pagesize is a power of 2 and passed in as an argument to the simulator which can
 To run the simulator, for instance bubble-sort with page size of 4KB and mode orcl
 
 ```sh
-./valgrindScipt.sh bubble-sort.do
+./valgrindScript.sh bubble-sort.do
 ./simulate.sh bubble-sort.do 4096 orclpref
 ```
 
