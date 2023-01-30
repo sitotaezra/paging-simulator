@@ -11,8 +11,6 @@
 #include <math.h>
 #include <unordered_map>
 
-#define PAGE_NUMBER 0xFFFFF000
-
 using namespace std;
 int PAGE_SIZE = getpagesize();
 
@@ -25,40 +23,44 @@ static inline void ltrim(std::string &s)
 
 int main(int argc, char **argv)
 {
+    //parse page size from input
     PAGE_SIZE = std::stoi(argv[1]);
+    //read from valgrind file
     std::ifstream infile("valgrind");
     std::string line;
     int addressSize = 0;
     string minHex;
+
+    //initalize sequence structure
     vector<pair<std::string, pair<int, bool>>> sequence;
+  
 
-   std::unordered_map <std::string, pair <int, bool>> pageMap;
-
-
+    //loop through each line
     while (std::getline(infile, line))
     {
     
         ltrim(line);
+        //only consider load and store operations
         if (line[0] == 'L' || line[0] == 'S')
         {
             auto type = line.substr(0, line.find(" "));
             auto address = line.substr(line.find(" "), line.find(",") - 1);
             ltrim(address);
 
-        
+            //check if store operation
             bool isStrore = line[0]=='S' ? true :false;
- 
+            
+            //map page
             int n;
             std::istringstream(address) >> std::hex >> n;
             int pageNo = n/PAGE_SIZE;
           
-            // int pageNumber = (n & PAGE_NUMBER) >> 12;
-          
+         
             std::ostringstream aa;
             aa << std::hex << pageNo;
             std::string result = aa.str();
 
-            // just add to list
+            //add to list
             pair<std::string, pair<int, bool>> item = {result,{0, isStrore}};
                     sequence.push_back(item);
             
@@ -84,7 +86,7 @@ int main(int argc, char **argv)
     }
  
 
-        
+    //optput formating    
     for (int i = 0; i < sequence.size(); i++)
     {
         std::string isStore;
